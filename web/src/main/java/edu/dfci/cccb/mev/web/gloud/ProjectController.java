@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.social.google.api.Google;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +33,6 @@ import com.google.cloud.storage.Acl.Entity.Type;
 import com.google.cloud.storage.Acl.User;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.Storage;
-import com.google.inject.Provider;
 
 import edu.dfci.cccb.mev.dataset.domain.contract.DatasetBuilder;
 import edu.dfci.cccb.mev.dataset.domain.contract.DatasetException;
@@ -58,7 +59,7 @@ public class ProjectController {
           Entity e = a.getEntity ();
           if (e.getType () == Type.USER)
             if (emails.contains (((User) e).getEmail ()))
-              projects.add (mapper.readValue (b.get ("project.json").getContent (), Project.class)
+              projects.add (mapper.readValue (b.get ("mev.json").getContent (), Project.class)
                                   .bucket (b.getName ()));
         }
 

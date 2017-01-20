@@ -14,9 +14,20 @@
  */
 package edu.dfci.cccb.mev.web.configuration.social;
 
+import static java.util.Arrays.asList;
+
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+
+import javax.inject.Named;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -37,6 +48,12 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.google.auth.oauth2.ServiceAccountCredentials;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
+
+import edu.dfci.cccb.mev.configuration.util.archaius.ArchaiusConfig;
+import edu.dfci.cccb.mev.configuration.util.contract.Config;
 import edu.dfci.cccb.mev.dataset.rest.google.SecurityContext;
 import edu.dfci.cccb.mev.web.domain.social.SimpleConnectionSignUp;
 import edu.dfci.cccb.mev.web.domain.social.SimpleSignInAdapter;
@@ -144,6 +161,32 @@ public class GoogleConfiguration extends WebMvcConfigurerAdapter {
       public void postSignIn (Connection<Google> connection, WebRequest request) {}
     });
     return controller;
+  }
+
+  @Bean (name = "gcloud-config")
+  public Config getConfig () {
+    return new ArchaiusConfig ("gcloud-config.properties");
+  }
+
+  @Bean
+  @Lazy
+  @Scope (proxyMode = ScopedProxyMode.INTERFACES)
+  public Storage storage (@Named ("gcloud-config") Config config) throws InvalidKeySpecException,
+                                                                 NoSuchAlgorithmException {
+    String k = config.getProperty ("gcloud.private.key");
+    if (k == null)
+      return null;
+    PrivateKey key = KeyFactory.getInstance ("RSA")
+                               .generatePrivate (new PKCS8EncodedKeySpec (k.getBytes ()));
+    return StorageOptions.newBuilder ()
+                         .setProjectId (config.getProperty ("gcloud.project.id"))
+                         .setCredentials (new ServiceAccountCredentials (config.getProperty ("gcloud.client.id"),
+                                                                         config.getProperty ("gcloud.client.email"),
+                                                                         key,
+                                                                         config.getProperty ("gcloud.private.key.id"),
+                                                                         asList ("https://www.googleapis.com/auth/devstorage.read_only")))
+                         .build ()
+                         .getService ();
   }
 
   /* (non-Javadoc)
