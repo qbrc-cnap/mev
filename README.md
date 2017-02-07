@@ -6,8 +6,9 @@ To run locally install [docker](https://docs.docker.com/) and [minikube](https:/
 ```
 eval $(minikube docker-env)
 docker run -p8080:8080 -d cccb/mev-web:baylie-2017-02-03
+echo http://$(minikube ip):8080
 ```
-Once the image is pulled down and running you can point your browser to localhost:8080/
+The last line of output should be the URL of the application
 
 ===
 
