@@ -1,0 +1,1 @@
+R CMD Rserve --no-save && catalina.sh run

@@ -15,9 +15,7 @@ define(["mui",
 	'angular-utils-ui-breadcrumbs',
 
 	'ui-router-extras',
-	'oclazyload',
-	'js/orefine/OrefineBridge',
-	'mainmenu'
+	'oclazyload'
 ], function(ng){
 	"use strict";
 	return ng.module("ngbootstrap-app", ["ct.ui.router.extras"], arguments)
