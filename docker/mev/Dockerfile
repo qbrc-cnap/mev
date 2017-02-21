@@ -43,5 +43,6 @@ ADD server.xml /usr/local/tomcat/conf/server.xml
 ADD eval.R /opt/eval.R
 ADD run.sh /opt/run.sh
 ADD Rserve.conf /etc/Rserv.conf
+ADD topgo /opt/data/topgo/domain/src/main/resources
 
 CMD ["sh", "/opt/run.sh"]
