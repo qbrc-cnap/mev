@@ -13,3 +13,4 @@ shim ('jsonlite', callback = function (fromJSON, toJSON) {
       r;
     } else x);
 }, binder = binder ());
+assign ("mwd", "/opt/data", e =.GlobalEnv);

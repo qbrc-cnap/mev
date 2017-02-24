@@ -88,12 +88,12 @@ public class RDispatcher {
   }
 
   @SneakyThrows ({ JsonProcessingException.class, MevException.class })
-  private RSession define (String name, Object value, RSession to, StringBuffer command) throws RserveException,
+  private RConnection define (String name, Object value, RConnection c, StringBuffer command) throws RserveException,
                                                                                         IOException {
     // UUID unique = randomUUID ();
     // String p = "p." + abs (unique.getMostSignificantBits ()) + "." + abs
     // (unique.getLeastSignificantBits ());
-    RConnection c = to.attach ();
+    //RConnection c = to.attach ();
     try (OutputStream target = new BufferedOutputStream (c.createFile (name), 1024 * 1024 * 10)) {
       if (value instanceof Dataset) {
         log.debug ("ProtoBuf Dataset ............. !!! ");
@@ -125,7 +125,7 @@ public class RDispatcher {
       // .append (name).append
       // ("')); if (length (r) == 1) r[ 1, 1 ] else r; } , scope = singleton, binder = binder); ");
     }
-    return c.detach ();
+    return c;
   }
 
   @SneakyThrows (IllegalAccessException.class)
@@ -134,7 +134,6 @@ public class RDispatcher {
     try {
       InetSocketAddress host = this.host.get ();
       RConnection connection = new RConnection (host.getHostString (), host.getPort ());
-      RSession session = connection.detach ();
 
       UUID unique = randomUUID ();
       String v = "v." + abs (unique.getMostSignificantBits ()) + "." + abs (unique.getLeastSignificantBits ());
@@ -147,9 +146,9 @@ public class RDispatcher {
             Parameter annotation = field.getAnnotation (Parameter.class);
             if (annotation != null) {
               field.setAccessible (true);
-              session = define ("".equals (annotation.value ()) ? field.getName () : annotation.value (),
+              connection = define ("".equals (annotation.value ()) ? field.getName () : annotation.value (),
                                 field.get (job),
-                                session,
+                                connection,
                                 command);
             }
           }
@@ -158,9 +157,9 @@ public class RDispatcher {
             Parameter annotation = method.getAnnotation (Parameter.class);
             if (annotation != null) {
               method.setAccessible (true);
-              session = define ("".equals (annotation.value ()) ? method.getName () : annotation.value (),
+              connection = define ("".equals (annotation.value ()) ? method.getName () : annotation.value (),
                                 method.invoke (job),
-                                session,
+                      connection,
                                 command);
             }
           }
@@ -170,27 +169,11 @@ public class RDispatcher {
 
         if (r.synchronize ()) {
           command.append ("inject (").append (r.value ()).append (", binder); }), silent = TRUE);");
-          connection = session.attach ();
           connection.eval (command.toString ());
           result = connection.eval ("inject (function (result) result (" + v + "));");
           connection.close ();
         } else {
-          command.append ("inject (")
-                 .append (r.value ())
-                 .append (", binder); }), silent = TRUE);");
-
-          for (session = session.attach ().voidEvalDetach (command.toString ());;)
-            try {
-              connection = session.attach ();
-              break;
-            } catch (RserveException e) {
-              log.error (e);
-              if (!(e.getCause () instanceof SocketTimeoutException))
-                throw e;
-            }
-
-          result = connection.eval ("inject (function (result) result (" + v + "));");
-          connection.voidEval ("rm (" + v + ")");
+          throw new UnsupportedOperationException ("Asynchronous operation is not supported");
         }
 
         for (Class<?> clazz = job.getClass (); clazz != null; clazz = clazz.getSuperclass ())

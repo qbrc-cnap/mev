@@ -17,7 +17,7 @@ import edu.dfci.cccb.mev.dataset.domain.r.annotation.R;
 import edu.dfci.cccb.mev.dataset.domain.r.annotation.Result;
 import edu.dfci.cccb.mev.dataset.domain.subset.DataSubset;
 
-@R ("function (dataset, top) {\n"
+@R (synchronize = true, value = "function (dataset, top) {\n"
     + "pca <- prcomp (t (data.matrix (na.omit(dataset))));\n"
     + "list (sdev = pca$sdev,"
 //    + "      center = as.list (pca$center),"

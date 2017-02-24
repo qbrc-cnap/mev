@@ -11,7 +11,7 @@ import edu.dfci.cccb.mev.dataset.domain.r.annotation.Parameter;
 import edu.dfci.cccb.mev.dataset.domain.r.annotation.R;
 import edu.dfci.cccb.mev.dataset.domain.r.annotation.Result;
 
-@R ("function(dataset, control=NA, experiment=NA, method='fdr', log = TRUE){\n"
+@R (synchronize = true, value = "function(dataset, control=NA, experiment=NA, method='fdr', log = TRUE){\n"
         + "library('edgeR')\n"
     + "ALL_SAMPLES=colnames(dataset)\n"
     + "if (!(experiment %in% ALL_SAMPLES) || !(control %in% ALL_SAMPLES)){\n"

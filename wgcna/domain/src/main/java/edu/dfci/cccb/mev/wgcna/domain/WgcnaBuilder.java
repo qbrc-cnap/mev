@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by antony on 5/27/16.
  */
-@R("function(dataset, distMethod=\"euclidean\", WeightFilter=0.9, sizeLimit=1000, log=TRUE){\n" +
+@R(synchronize = true, value = "function(dataset, distMethod=\"euclidean\", WeightFilter=0.9, sizeLimit=1000, log=TRUE){\n" +
         "  library(WGCNA)\n" +
         "  if(dim(dataset)[1]>sizeLimit){stop(\"WGCNA::Expression Matrix exceeds limit\")}\n" +
         "  datExp=data.frame(t(dataset))\n" +

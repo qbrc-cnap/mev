@@ -173,18 +173,8 @@ public class GoogleConfiguration extends WebMvcConfigurerAdapter {
   @Scope (proxyMode = ScopedProxyMode.INTERFACES)
   public Storage storage (@Named ("gcloud-config") Config config) throws InvalidKeySpecException,
                                                                  NoSuchAlgorithmException {
-    String k = config.getProperty ("gcloud.private.key");
-    if (k == null)
-      return null;
-    PrivateKey key = KeyFactory.getInstance ("RSA")
-                               .generatePrivate (new PKCS8EncodedKeySpec (k.getBytes ()));
     return StorageOptions.newBuilder ()
                          .setProjectId (config.getProperty ("gcloud.project.id"))
-                         .setCredentials (new ServiceAccountCredentials (config.getProperty ("gcloud.client.id"),
-                                                                         config.getProperty ("gcloud.client.email"),
-                                                                         key,
-                                                                         config.getProperty ("gcloud.private.key.id"),
-                                                                         asList ("https://www.googleapis.com/auth/devstorage.read_only")))
                          .build ()
                          .getService ();
   }
