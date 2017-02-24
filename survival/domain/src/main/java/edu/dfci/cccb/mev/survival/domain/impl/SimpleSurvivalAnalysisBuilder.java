@@ -9,7 +9,7 @@ import edu.dfci.cccb.mev.dataset.domain.r.annotation.Result;
 import edu.dfci.cccb.mev.survival.domain.contract.SurvivalAnalysis;
 import edu.dfci.cccb.mev.survival.domain.contract.SurvivalParams;
 
-@R ("function (data) {\n" + 
+@R (synchronize = true, value = "function (data) {\n" +
         "  baseline <- function(ds){\n" + 
         "    for(i in 1:length(ds)){\n" + 
         "      if(class(ds[1,i]) == \"factor\"){\n" + 

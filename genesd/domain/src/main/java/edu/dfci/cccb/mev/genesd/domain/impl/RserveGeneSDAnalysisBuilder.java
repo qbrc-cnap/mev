@@ -12,7 +12,7 @@ import edu.dfci.cccb.mev.genesd.domain.impl.SimpleGeneSDAnalysis;
 import edu.dfci.cccb.mev.genesd.domain.impl.RserveGeneSDAnalysisBuilder;
 import edu.dfci.cccb.mev.genesd.domain.impl.SimpleGeneSDResult;
 @Log4j
-@R ("function (dataset) {\n"
+@R (synchronize = true, value = "function (dataset) {\n"
       + "gene.sd=sort(apply(as.matrix(dataset), 1, sd), decreasing=TRUE)\n" 
       + "list(genes=names(gene.sd), sd=gene.sd)\n"
       + "}")

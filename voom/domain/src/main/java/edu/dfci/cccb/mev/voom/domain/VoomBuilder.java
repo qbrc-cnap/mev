@@ -11,7 +11,7 @@ import edu.dfci.cccb.mev.dataset.domain.r.annotation.Parameter;
 import edu.dfci.cccb.mev.dataset.domain.r.annotation.R;
 import edu.dfci.cccb.mev.dataset.domain.r.annotation.Result;
 
-@R ("function (dataset, control, experiment) shim ('limma', 'edgeR', callback = function (contrasts.fit, voom, DGEList, lmFit, eBayes, makeContrasts, topTable, calcNormFactors) {"
+@R (synchronize = true, value = "function (dataset, control, experiment) shim ('limma', 'edgeR', callback = function (contrasts.fit, voom, DGEList, lmFit, eBayes, makeContrasts, topTable, calcNormFactors) {"
     + "CurrMtx <- data.matrix (dataset);\n"
     + "dge <- DGEList (counts = CurrMtx);\n"
     + "Tissue <- array (NA, dim=c (1,length (colnames (CurrMtx))));\n"

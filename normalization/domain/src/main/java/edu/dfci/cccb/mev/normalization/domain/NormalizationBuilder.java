@@ -13,7 +13,7 @@ import edu.dfci.cccb.mev.dataset.domain.r.annotation.R;
 import edu.dfci.cccb.mev.dataset.domain.r.annotation.Result;
 import edu.dfci.cccb.mev.normalization.domain.Normalization.NormalizationParameters;
 
-@R ("function(dataset,method='deseq'){\n"
+@R (synchronize = true, value = "function(dataset,method='deseq'){\n"
         + "phenoData=NULL;featureData=NULL;log = TRUE;\n"
     + "library('rafalib')\n"
     + "library('metagenomeSeq')\n"

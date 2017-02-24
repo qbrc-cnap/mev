@@ -17,7 +17,7 @@ import edu.dfci.cccb.mev.dataset.domain.r.annotation.Result;
 import edu.dfci.cccb.mev.histogram.domain.contract.HistogramAnalysis;
 import edu.dfci.cccb.mev.histogram.domain.contract.HistogramAnalysisBuilder;
 
-@R ("function (dataset) {\n"
+@R (synchronize = true, value = "function (dataset) {\n"
       + "hist.result=hist(as.matrix(dataset), plot=FALSE);\n"
       + "list(breaks=hist.result$breaks, counts=hist.result$counts, density=hist.result$density, mids=hist.result$mids);\n"
       + "}")

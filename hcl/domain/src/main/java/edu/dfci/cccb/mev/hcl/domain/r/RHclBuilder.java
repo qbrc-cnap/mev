@@ -25,7 +25,7 @@ import edu.dfci.cccb.mev.hcl.domain.contract.HclBuilder;
 import edu.dfci.cccb.mev.hcl.domain.prototype.AbstractHcl.CHclResult;
 import edu.dfci.cccb.mev.hcl.domain.simple.SimpleHcl;
 
-@R ("function (dataset, metric, linkage, dimension) {"
+@R (synchronize = true, value = "function (dataset, metric, linkage, dimension) {"
     + "library(amap);\n"
     + "hc2n <- function (hc, flat = FALSE) {\n"
     + "  dist <- 0;\n"

@@ -18,7 +18,7 @@ import edu.dfci.cccb.mev.limma.domain.prototype.AbstractLimma;
 import edu.dfci.cccb.mev.limma.domain.simple.SimpleEntry;
 
 @Accessors (fluent = true, chain = true)
-@R ("function (dataset, control, experiment) {\n"
+@R (synchronize = true, value = "function (dataset, control, experiment) {\n"
     + "library(limma);\n"
     + "run.limma<-function(in.mtx, Experiment=NA, Control=NA){\n"
 

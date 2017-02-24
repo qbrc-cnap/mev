@@ -9,7 +9,7 @@ import edu.dfci.cccb.mev.dataset.domain.r.annotation.Result;
 import edu.dfci.cccb.mev.genemad.domain.contract.GeneMADAnalysis;
 
 @Log4j
-@R ("function (dataset) {\n"
+@R (synchronize = true, value = "function (dataset) {\n"
       + "gene.mad=sort(apply(as.matrix(dataset),1,mad), decreasing=TRUE)\n" 
       + "genemad<-list(genes=names(gene.mad), mad=gene.mad)"
       + "}")

@@ -40,7 +40,7 @@ import edu.dfci.cccb.mev.kmeans.domain.prototype.AbstractKMeans;
  * 
  */
 @Accessors (fluent = true)
-@R ("function (dataset, k, dimension, metric) {\n"
+@R (synchronize = true, value = "function (dataset, k, dimension, metric) {\n"
     + "group <- function (clustering) {\n"
     + "  clusters <- list ();\n"
     + "  for (index in 1:length (clustering)) {\n"

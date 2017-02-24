@@ -37,7 +37,7 @@ import edu.dfci.cccb.mev.dataset.rest.configuration.RDispatcherConfiguration;
 public class RDispatchTest {
   private @Autowired RDispatcher r;
 
-  @R ("function (param) list (p = param)")
+  @R (synchronize = true, value = "function (param) list (p = param)")
   public static class J {
     private @Parameter String param = "hello";
 

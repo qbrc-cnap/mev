@@ -31,7 +31,7 @@ import edu.dfci.cccb.mev.dataset.domain.r.annotation.Result;
 // ("function (dataset, rank, method, nrun, nmf) nmf (dataset, rank, method, nrun)")
 // @R
 // ("function (dataset, rank, method, nrun) nmf (dataset, rank = rank, method = method, nrun = nrun)")
-@R ("function (dataset) {"
+@R (synchronize = true, value = "function (dataset) {"
     + "hc2n <- function (hc, flat = FALSE) {\n"
     + "  dist <- 0;\n"
     + "  if (is.null (hc$labels)) labels <- seq(along = hc$order) else labels <- hc$labels;\n"
