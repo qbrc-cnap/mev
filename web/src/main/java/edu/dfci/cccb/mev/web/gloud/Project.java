@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Accessors (fluent = true, chain = true)
 public class Project {
 
-  private @Getter @JsonProperty ("project") String name;
+  private @Getter @JsonProperty ("project_id") String name;
   private @Getter @JsonProperty List<File> files;
   private @Getter @Setter @JsonProperty String bucket;
+  private @Getter @Setter @JsonProperty String description;
 }

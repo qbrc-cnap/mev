@@ -11,12 +11,16 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Provider;
 
+import edu.dfci.cccb.mev.configuration.util.contract.Config;
+import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.social.google.api.Google;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,29 +43,35 @@ import edu.dfci.cccb.mev.dataset.domain.contract.DatasetException;
 import edu.dfci.cccb.mev.dataset.domain.contract.RawInput;
 import edu.dfci.cccb.mev.dataset.domain.contract.Workspace;
 
+@Log4j
 @RestController
 public class ProjectController {
 
-  private @Inject Storage storage;
+  private @Inject Provider<Storage> storage;
   private @Inject ObjectMapper mapper;
   private @Inject Provider<Google> google;
   private @Inject Workspace workspace;
   private @Inject DatasetBuilder dsb;
+  @Inject @Named("gcloud-config") Config config;
 
   @RequestMapping (value = "/cccb-projects", method = GET)
   public List<Project> projects () throws JsonParseException, JsonMappingException, IOException {
     List<Project> projects = new ArrayList<> ();
     Set<String> emails = google.get ().plusOperations ().getGoogleProfile ().getEmailAddresses ();
+    Storage s = storage.get();
 
-    for (Page<Bucket> p = storage.list (fields (ID, ACL, NAME)).getNextPage (); p != null;)
-      for (Bucket b : p.getValues ())
+    for (Iterator<Bucket> i = s.list(Storage.BucketListOption.pageSize(100)).iterateAll(); i.hasNext ();) {
+      Bucket b = i.next();
+      try {
         for (Acl a : b.getAcl ()) {
-          Entity e = a.getEntity ();
-          if (e.getType () == Type.USER)
-            if (emails.contains (((User) e).getEmail ()))
-              projects.add (mapper.readValue (b.get ("mev.json").getContent (), Project.class)
-                                  .bucket (b.getName ()));
+          Entity e = a.getEntity();
+          if (e.getType() == Type.USER && emails.contains(((User)e).getEmail()))
+            projects.add(mapper.readValue(b.get(config.getProperty("gcloud.project.json.filename", "mev.json")).getContent(), Project.class).bucket (b.getName ()));
         }
+      } catch (Exception e) {
+        log.debug("Skipping bucket " + b.getName());
+      }
+    }
 
     return projects;
   }
@@ -77,10 +87,10 @@ public class ProjectController {
           workspace.put (dsb.build (new RawInput () {
             private final long sz;
             private final InputStream ct;
-            private String name = file.description ();
+            private String name = file.name ();
 
             {
-              byte[] bt = storage.get (project.bucket (), file.path ()).getContent ();
+              byte[] bt = storage.get ().get (project.bucket (), file.path ()).getContent ();
               sz = bt.length;
               ct = new ByteArrayInputStream (bt);
             }

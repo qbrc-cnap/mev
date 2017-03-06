@@ -13,4 +13,5 @@ public class File {
   private @Getter @JsonProperty String path;
   private @Getter @JsonProperty String type;
   private @Getter @JsonProperty String description;
+  private @Getter @JsonProperty String name;
 }
