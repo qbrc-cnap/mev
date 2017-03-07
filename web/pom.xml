@@ -505,6 +505,10 @@
               <name>checkAliases</name>
               <value>${jetty.checkAliases}</value>
             </systemProperty>
+            <systemProperty>
+              <name>mev.gcloud.serviceaccount.key.location</name>
+              <value>${mev.gcloud.serviceaccount.key.location}</value>
+            </systemProperty>
           </systemProperties>
         </configuration>
       </plugin>
@@ -790,11 +794,11 @@
             <configuration>
               <excludeDefaultDirectories>true</excludeDefaultDirectories>
               <filesets>
-                <!-- this first file set removes the symlinks used in the 
+                <!-- this first file set removes the symlinks used in the
                   live-reload mode (if they are there) -->
-                <!-- this is necessary because the plugin junction will fail 
+                <!-- this is necessary because the plugin junction will fail
                   if the links already exist -->
-                <!-- note, this first fileset will not remove regular folders 
+                <!-- note, this first fileset will not remove regular folders
                   (used in bundle mode), only symlinks -->
                 <fileset>
                   <directory>${project.build.outputDirectory}/edu/dfci/cccb/mev/web</directory>
@@ -807,7 +811,7 @@
                     <include>vendor</include>
                   </includes>
                 </fileset>
-                <!-- these remaining filesets remove the regular folders 
+                <!-- these remaining filesets remove the regular folders
                   (not symlinks) before we replace them with symlinks with the "junction" plugin -->
                 <fileset>
                   <directory>${project.build.outputDirectory}/edu/dfci/cccb/mev/web/javascript</directory>
@@ -881,8 +885,18 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <build>
+        <resources>
+          <resource>
+            <directory>src/main/style</directory>
+            <filtering>false</filtering>
+          </resource>
+          <resource>
+            <directory>src/main/images</directory>
+            <filtering>false</filtering>
+          </resource>
+        </resources>
         <plugins>
-          <plugin>
+          <!--<plugin>
             <artifactId>maven-clean-plugin</artifactId>
             <version>2.4.1</version>
             <executions>
@@ -895,7 +909,7 @@
               </execution>
             </executions>
             <configuration>
-              <excludeDefaultDirectories>true</excludeDefaultDirectories>
+              <excludeDefaultDirectories>false</excludeDefaultDirectories>
               <filesets>
                 <fileset>
                   <directory>${project.build.outputDirectory}/edu/dfci/cccb/mev/web</directory>
@@ -910,7 +924,7 @@
                 </fileset>
               </filesets>
             </configuration>
-          </plugin>
+          </plugin>-->
           <plugin>
             <artifactId>maven-resources-plugin</artifactId>
             <executions>
@@ -928,6 +942,8 @@
                       <directory>src/main/javascript/edu/dfci/cccb/mev/web</directory>
                       <filtering>false</filtering>
                       <includes>
+                        <include>images/**</include>
+                        <include>style/**</include>
                         <include>javascript/**</include>
                         <include>libs/*</include>
                         <include>mock/**</include>
@@ -944,6 +960,7 @@
                         <include>ui/node_modules/mev-steal-bootstrap/**/*</include>
                       </includes>
                     </resource>
+
                   </resources>
                 </configuration>
               </execution>

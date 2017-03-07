@@ -78,6 +78,7 @@
     <MEV_HOME>.</MEV_HOME>
     <archaius.fixedDelayPollingScheduler.delayMills>60000</archaius.fixedDelayPollingScheduler.delayMills>
     <archaius.fixedDelayPollingScheduler.initialDelayMills>0</archaius.fixedDelayPollingScheduler.initialDelayMills>
+    <mev.gcloud.serviceaccount.key.location>${user.home}/CCCB-Sandbox-21fdf1da68e0.json</mev.gcloud.serviceaccount.key.location>
   </properties>
 
   <profiles>

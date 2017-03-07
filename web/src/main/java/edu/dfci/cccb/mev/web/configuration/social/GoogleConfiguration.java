@@ -16,6 +16,8 @@ package edu.dfci.cccb.mev.web.configuration.social;
 
 import static java.util.Arrays.asList;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -24,6 +26,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 
 import javax.inject.Named;
 
+import com.google.auth.Credentials;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -117,7 +120,7 @@ public class GoogleConfiguration extends WebMvcConfigurerAdapter {
    * connections.
    */
   @Bean
-  @Scope (value = "request", proxyMode = ScopedProxyMode.INTERFACES)
+  @Scope (value = "request")
   public ConnectionRepository connectionRepository (UsersConnectionRepository usersConnectionRepository) {
     return usersConnectionRepository.createConnectionRepository (SecurityContext.getCurrentUser ().getId ());
   }
@@ -129,7 +132,7 @@ public class GoogleConfiguration extends WebMvcConfigurerAdapter {
    * @throws NotConnectedException if the user is not connected to Google.
    */
   @Bean
-  @Scope (value = "request", proxyMode = ScopedProxyMode.INTERFACES)
+  @Scope (value = "request")
   public Google google (ConnectionRepository connectionRepository) {
     return connectionRepository.getPrimaryConnection (Google.class).getApi ();
   }
@@ -170,10 +173,12 @@ public class GoogleConfiguration extends WebMvcConfigurerAdapter {
 
   @Bean
   @Lazy
-  @Scope (proxyMode = ScopedProxyMode.INTERFACES)
+  @Scope ("prototype")
   public Storage storage (@Named ("gcloud-config") Config config) throws InvalidKeySpecException,
-                                                                 NoSuchAlgorithmException {
+                                                                 NoSuchAlgorithmException, IOException {
+    Credentials c = ServiceAccountCredentials.fromStream(new FileInputStream(config.getProperty("mev.gcloud.serviceaccount.key.location", "/etc/google/service.json")));
     return StorageOptions.newBuilder ()
+                         .setCredentials(c)
                          .setProjectId (config.getProperty ("gcloud.project.id"))
                          .build ()
                          .getService ();
