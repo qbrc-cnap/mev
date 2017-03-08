@@ -171,7 +171,6 @@ public class RDispatcher {
           command.append ("inject (").append (r.value ()).append (", binder); }), silent = TRUE);");
           connection.eval (command.toString ());
           result = connection.eval ("inject (function (result) result (" + v + "));");
-          connection.close ();
         } else {
           throw new UnsupportedOperationException ("Asynchronous operation is not supported");
         }
