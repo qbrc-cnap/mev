@@ -2,6 +2,7 @@ package edu.dfci.cccb.mev.web.test.edger.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.dfci.cccb.mev.annotation.server.configuration.AnnotationProjectManagerConfiguration;
 import edu.dfci.cccb.mev.dataset.domain.contract.*;
 import edu.dfci.cccb.mev.dataset.domain.fs.FlatFileValueStoreBuilder;
 import edu.dfci.cccb.mev.dataset.domain.simple.SimpleDatasetBuilder;
@@ -12,6 +13,8 @@ import edu.dfci.cccb.mev.dataset.rest.configuration.DatasetRestConfiguration;
 import edu.dfci.cccb.mev.dataset.rest.configuration.RDispatcherConfiguration;
 import edu.dfci.cccb.mev.edger.domain.Edge;
 import edu.dfci.cccb.mev.edger.rest.EdgeConfiguration;
+import edu.dfci.cccb.mev.presets.rest.configuration.PresetsRestConfiguration;
+import edu.dfci.cccb.mev.test.annotation.server.configuration.ProbeAnnotationsPersistanceConfigTest;
 import edu.dfci.cccb.mev.web.configuration.DispatcherConfiguration;
 import edu.dfci.cccb.mev.web.configuration.PersistenceConfiguration;
 import edu.dfci.cccb.mev.web.configuration.container.ContainerConfigurations;
@@ -56,12 +59,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Log4j
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={DispatcherConfiguration.class,
+@ContextConfiguration(classes={
+        DispatcherConfiguration.class,
         PersistenceConfiguration.class,
         ContainerConfigurations.class,
         DatasetRestConfiguration.class,
+        AnnotationProjectManagerConfiguration.class,
+        PresetsRestConfiguration.class,
+        ProbeAnnotationsPersistanceConfigTest.class,
         RDispatcherConfiguration.class,
-        EdgeConfiguration.class
+        EdgeConfiguration.class,
 })
 public class TestEdgerController {
 
@@ -91,7 +98,7 @@ public class TestEdgerController {
         workspace.put (dataset);
     }
 
-    @Test @Ignore
+    @Test
     public void testAsync() throws Exception {
         Selection control = jsonObjectMapper.readValue("{\"name\":\"s1\",\"properties\":{\"selectionColor\":\"#5fd97b\",\"selectionDescription\":\"\"},\"keys\":[\"A\",\"B\",\"C\"]}", SimpleSelection.class);
         Selection experiment = jsonObjectMapper.readValue("{\"name\":\"s2\",\"properties\":{\"selectionColor\":\"#b0220e\",\"selectionDescription\":\"\"},\"keys\":[\"D\",\"E\",\"F\"]}", SimpleSelection.class);

@@ -9,8 +9,10 @@ define(["mui",
 	"../../widgets/presets/widgets.presets.module",
 	"./session/views.datasets.session.module",
 	"./error/views.datasets.error.module",
+		"./emailprompt/emailPrompt",
 		"mev-bs-modal",
 		"mev-workspace",
+		"mev-subscriber",
 		"mev-domain-common",
 		'js-data-angular',
 		"../../domain/domain.module",
@@ -43,8 +45,18 @@ function(ng, DatasetsVM, datasetsTemplate, tutorialsTemplate, googleTemplate, up
 							}
 						},
 						sticky: true,
-						onEnter: ["mevFetchSrc", function(mevFetchSrc) {
+						onEnter: ["mevFetchSrc", "mevEmailPrompt", function(mevFetchSrc, mevEmailPrompt) {
 							return mevFetchSrc.fetch("app/views/datasets/views.datasets.module", $$animateJsProvider)
+								.then(function(){
+									mevEmailPrompt().result
+										.then(function(val){
+											console.debug("yes", val, arguments);
+											mevWorkspace.saveEmail(scope.email);
+										})
+										.catch(function(val){
+											console.debug("no", arguments);
+										});
+								})
 								.catch(function(e){
 									throw e;
 								});

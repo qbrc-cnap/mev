@@ -136,7 +136,8 @@ public class TestHclController {
 	    workspace.put (dataset);
 	  }
 	
-	@Test @Ignore
+	@Test
+	//@Ignore
 	public void testCols() throws Exception {		
 		HclDto dto = new HclDto("hcl_cols", "column", "euclidean", "complete", null, null);
 	    run(dto);

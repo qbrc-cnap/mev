@@ -8,7 +8,6 @@ define(["mui"], function(mui){
                    return {name: "new", type: dimension};
                }
 
-
                var selectionSet = _.find(dataset[dimension].selections, function(selection){
                    return selection.name === $stateParams.setId;
                });

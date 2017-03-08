@@ -50,27 +50,27 @@ function(ng,
 	var module=ng.module("mui.views.dataset", arguments, arguments);
 	module.controller("AnnotationsViewVM", AnnotationsViewVM);
 	module.config(['$stateProvider', '$urlRouterProvider',
-	   	     	function($stateProvider, $urlRouterProvider){					
-	   	     		$stateProvider	  
+	   	     	function($stateProvider, $urlRouterProvider){
+	   	     		$stateProvider
 	   	     		.state("root.abstractDataset", {
 	   	     			parent: "root",
 	   	     			"abstract": true,
 	   	     			url: "/dataset",
 	   	     			breadcrumbProxy: "root.datasets",
    	     				displayName: "datasets",
-   	     				template: "<ui-view></ui-view>"   	     					
+   	     				template: "<ui-view></ui-view>"
 	   	     		})
-	   	     		.state("root.dataset", {	   	     			
+	   	     		.state("root.dataset", {
 	   	     			parent: "root.abstractDataset",
 	   	     			"abstract": true,
-	   	     			url: "/:datasetId/",	   	     			
+	   	     			url: "/:datasetId/",
 //			   	     	params: {
 //			   	     		datasetId: null
-//			   	     	},	
+//			   	     	},
 	   	     			templateUrl: "app/views/dataset/_templates/dataset.tpl.html",
 	   	     			breadcrumbProxy: "root.dataset.home",
 	   	     			displayName: "{{dataset.datasetName}}",
-//	   	     			template: "<div>dataset: {{$stateParams.datasetId}}</div>",	   	     			
+//	   	     			template: "<div>dataset: {{$stateParams.datasetId}}</div>",
 	   	     			controller: "DatasetProjectViewVM",
 	   	     			controllerAs: "DatasetProjectViewVM",
 		   	     		data: {
@@ -80,7 +80,7 @@ function(ng,
 			   	     	},
 	   	     			resolve:{
 	   	     				datasetResource: ["$state", "$stateParams", "mevDatasetRest", "$q", "$http", function($state, $stateParams, DatasetResourceService, $q, $http){
-	   	     					
+
 		   	     				var datasetResource = DatasetResourceService.get({
 		   	     					datasetName: $stateParams.datasetId
 		   	     				}, function(response){
@@ -96,17 +96,17 @@ function(ng,
 											header: "Parsing Error",
 											message: "Unable to parse data file. Two common causes are duplicate row keys or incorrect column header.",
 											error: error})
-		   	     				});	   	     					
-		   	     				return datasetResource.$promise;		   	     				
+		   	     				});
+		   	     				return datasetResource.$promise;
 	   	     				}],
 	   	     				project: ["$state", "$stateParams", "datasetResource", "ProjectFactory",
 	   	     				function($state, $stateParams, datasetResource, ProjectFactory){
 	   	     						return datasetResource.$promise.then(function(response){
-			   	     					var project = ProjectFactory($stateParams.datasetId, datasetResource);	   	     					
-			   	     					console.debug("***Project", project);	   	     					
+			   	     					var project = ProjectFactory($stateParams.datasetId, datasetResource);
+			   	     					console.debug("***Project", project);
 			   	     					return project;
-			   	     				});	   	     					
-	   	     				}],	
+			   	     				});
+	   	     				}],
 	   	     				dataset: ["$state", "$stateParams", "project", "mevAnnotationRepository",
 	   	     				function($state, $stateParams, project){
 	   	     					console.info("***resolving dataset", $stateParams.datasetId, $stateParams, $state, project);
@@ -135,7 +135,7 @@ function(ng,
 											.catch(handleNotFound);
 										return dataset;
 									});
-	   	     				}]	   	     				
+	   	     				}]
 	   	     			},
 						onExit: ["dataset", function(dataset){
 							console.log("closing " + dataset.id);
