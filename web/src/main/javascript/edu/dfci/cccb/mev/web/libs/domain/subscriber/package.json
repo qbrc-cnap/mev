@@ -1,0 +1,48 @@
+{
+  "name": "mev-subscriber",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/main/mev-subscriber.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/dfci-cccb/mev"
+  },
+  "author": "apartensky",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "1.4.x",
+    "angular-ui-router": "0.3.x",
+    "angular-resource": "1.4.x",
+    "lodash": "^4.0.1",
+    "mev-domain-common": "file:../common",
+    "mui": "file:../../mui",
+    "steal": "^0.13.2",
+    "system-text": "^0.1.0",
+    "ui-router-extras": "^0.1.2"
+  },
+  "devDependencies": {
+    "angular-ui-bootstrap": "^0.14.3",
+    "bootstrap": "^3.3.6",
+    "mev-mock": "file:../../domain/mock",
+    "mev-steal-bootstrap": "file:../../utils/steal-bootstrap",
+    "systemjs-plugin-json": "^0.1.0"
+  },
+  "system": {
+    "ext": {
+      "html": "system-text"
+    },
+    "configDependencies": [
+      "bower.json!bower"
+    ],
+    "meta": {
+      "ui-router-extras": {
+        "deps": [
+          "angular-ui-router"
+        ]
+      }
+    }
+  }
+}

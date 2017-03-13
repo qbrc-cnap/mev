@@ -1,0 +1,17 @@
+<form role="form">
+    <div class="errors" ng-if="vm.errors.length>0">
+        <p class="error bg-warning " ng-repeat="error in vm.errors">{{error.message}}</p>
+    </div>
+    <div class="form-group">
+        <label class="mev-param-label" >Name</label>
+        <input ng-model="vm.fields.name" placeholder="">
+    </div>
+    <div class="form-group">
+        <label class="mev-param-label" >Email*</label>
+        <input ng-model="vm.fields.email" placeholder="ex: you@email.com">
+    </div>
+    <div class="form-group">
+        <a class="btn btn-success" ng-click="vm.ok()" aria-hidden="true">Yes</a>
+        <a class="btn btn-info" ng-click="vm.cancel()" aria-hidden="true">No</a>
+    </div>
+</form>
