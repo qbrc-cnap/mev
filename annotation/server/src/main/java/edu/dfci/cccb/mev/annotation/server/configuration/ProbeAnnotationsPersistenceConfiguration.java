@@ -28,7 +28,7 @@ import edu.dfci.cccb.mev.configuration.util.archaius.ArchaiusConfig;
 import edu.dfci.cccb.mev.configuration.util.contract.Config;
 
 @Log4j
-@Configuration
+//@Configuration
 //@PropertySources({
 //@PropertySource(value={"classpath:persistence/probe_annotations.persistence.properties"}),
 //@PropertySource(value="classpath:persistence/probe_annotations.persistence-${spring_profiles_active}.properties", ignoreResourceNotFound=true)
@@ -65,7 +65,6 @@ public class ProbeAnnotationsPersistenceConfiguration {
   }
   
 
-  @Bean
   public LocalSessionFactoryBean sessionFactory () {
     LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean ();
     sessionFactory.setDataSource (dataSource());
