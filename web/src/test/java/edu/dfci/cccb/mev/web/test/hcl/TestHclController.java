@@ -17,6 +17,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
 
+import edu.dfci.cccb.mev.annotation.server.configuration.AnnotationProjectManagerConfiguration;
+import edu.dfci.cccb.mev.presets.rest.configuration.PresetsRestConfiguration;
+import edu.dfci.cccb.mev.test.annotation.server.configuration.ProbeAnnotationsPersistanceConfigTest;
 import lombok.extern.log4j.Log4j;
 
 import org.junit.Before;
@@ -68,11 +71,15 @@ import edu.dfci.cccb.mev.web.configuration.container.ContainerConfigurations;
 @Log4j
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={DispatcherConfiguration.class, 
-        PersistenceConfiguration.class, 
-        ContainerConfigurations.class, 
-        DatasetRestConfiguration.class,
-        RDispatcherConfiguration.class,
+@ContextConfiguration(classes={
+		DispatcherConfiguration.class,
+		PersistenceConfiguration.class,
+		ContainerConfigurations.class,
+		DatasetRestConfiguration.class,
+		AnnotationProjectManagerConfiguration.class,
+		PresetsRestConfiguration.class,
+		ProbeAnnotationsPersistanceConfigTest.class,
+		RDispatcherConfiguration.class,
         HclRestConfiguration.class
         })
 public class TestHclController {
@@ -137,7 +144,7 @@ public class TestHclController {
 	  }
 	
 	@Test
-	//@Ignore
+	@Ignore
 	public void testCols() throws Exception {		
 		HclDto dto = new HclDto("hcl_cols", "column", "euclidean", "complete", null, null);
 	    run(dto);
