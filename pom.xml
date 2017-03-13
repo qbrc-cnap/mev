@@ -67,7 +67,8 @@
 	<aws.java.sdk.version>1.9.6</aws.java.sdk.version>
     <maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
     <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
-
+    <!--<hibernate.version>4.2.7.SP1</hibernate.version>-->
+    <hibernate.version>5.1.4.Final</hibernate.version>
     <!-- MEV Defaults -->
     <mev.Rscript>Rscript</mev.Rscript>
     <mev.java.io.tmpdir>${java.io.tmpdir}</mev.java.io.tmpdir>
