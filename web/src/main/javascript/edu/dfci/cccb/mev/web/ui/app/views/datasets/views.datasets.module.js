@@ -9,7 +9,6 @@ define(["mui",
 	"../../widgets/presets/widgets.presets.module",
 	"./session/views.datasets.session.module",
 	"./error/views.datasets.error.module",
-		"./emailprompt/emailPrompt",
 		"mev-bs-modal",
 		"mev-workspace",
 		"mev-subscriber",
@@ -45,17 +44,10 @@ function(ng, DatasetsVM, datasetsTemplate, tutorialsTemplate, googleTemplate, up
 							}
 						},
 						sticky: true,
-						onEnter: ["mevFetchSrc", "mevEmailPrompt", function(mevFetchSrc, mevEmailPrompt) {
+						onEnter: ["mevFetchSrc", "mevSubscriberPrompt", function(mevFetchSrc, mevSubscriberPrompt) {
 							return mevFetchSrc.fetch("app/views/datasets/views.datasets.module", $$animateJsProvider)
 								.then(function(){
-									mevEmailPrompt().result
-										.then(function(val){
-											console.debug("yes", val, arguments);
-											mevWorkspace.saveEmail(scope.email);
-										})
-										.catch(function(val){
-											console.debug("no", arguments);
-										});
+									mevSubscriberPrompt();
 								})
 								.catch(function(e){
 									throw e;
