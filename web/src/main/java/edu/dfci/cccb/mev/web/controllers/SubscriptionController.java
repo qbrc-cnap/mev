@@ -36,11 +36,10 @@ public class SubscriptionController {
 
     @RequestMapping (method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public Collection<Subscriber> subscribe (@RequestBody Subscriber s) {
+    public void subscribe (@RequestBody Subscriber s) {
         db.getTransaction().begin();
         try {
             db.persist(s);
-            return new ArrayList<>(db.createQuery("from " + Subscriber.class.getName()).getResultList());
         }finally {
             db.getTransaction().commit();
         }
