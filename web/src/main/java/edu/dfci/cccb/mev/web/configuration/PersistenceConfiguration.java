@@ -14,43 +14,31 @@
  */
 package edu.dfci.cccb.mev.web.configuration;
 
-import static java.io.File.separator;
-import static java.lang.String.valueOf;
-import static java.lang.System.getProperty;
-import static org.h2.tools.Server.createWebServer;
-
-import java.sql.SQLException;
-import java.util.Properties;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.sql.DataSource;
-
 import lombok.Synchronized;
 import lombok.extern.log4j.Log4j;
-
 import org.apache.commons.dbcp.BasicDataSource;
-import org.apache.mahout.df.data.Data;
 import org.h2.tools.Server;
 import org.springframework.context.Lifecycle;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.LocalEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import java.sql.SQLException;
+
+import static java.io.File.separator;
+import static java.lang.String.valueOf;
+import static java.lang.System.getProperty;
+import static org.h2.tools.Server.createWebServer;
 
 /**
  * @author levk
@@ -63,54 +51,57 @@ public class PersistenceConfiguration {
 
   private @Inject Environment environment;
 
-  @Bean (name = "subscriberEmf")
-  public EntityManagerFactory emf () {
-    return Persistence.createEntityManagerFactory("h2");
-  }
+//  @Bean (name = "subsctiberEmf")
+//  @Scope("request")
+//  public EntityManagerFactory emf () {
+//    return Persistence.createEntityManagerFactory("h2");
+//  }
 
-  @Bean (name="subscriberEm")
-  @Scope ("request")
-  public EntityManager em (@Named ("subscriberEmf") EntityManagerFactory emf) {
-    return emf.createEntityManager();
-  }
+//  @Scope("request")
+//  @Bean (name="subscriberEm")
+//  public EntityManager em (@Named ("subsctiberEmf") EntityManagerFactory emf) {
+//    return emf.createEntityManager();
+//  }
 
-//  @Bean
-//  public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Named("mev-datasource") DataSource dataSource) {
-//
-//    LocalContainerEntityManagerFactoryBean factory = null;
-//    HibernateJpaVendor
-// Adapter vendorAdapter = new HibernateJpaVendorAdapter();
-//    vendorAdapter.setGenerateDdl(true);
-//    vendorAdapter.setShowSql(true);
-//
-////      vendorAdapter.setDatabasePlatform(MyAppSettings.getDbPlattform());
-//
-//    HibernateJpaDialect jpd = new HibernateJpaDialect();
-//    factory = new LocalContainerEntityManagerFactoryBean();
-//
+  @Bean (name="subsctiberEmfb")
+  public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
+/*
+    HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+    vendorAdapter.setGenerateDdl(true);
+    vendorAdapter.setShowSql(true);
+//      vendorAdapter.setDatabasePlatform(MyAppSettings.getDbPlattform());
+    HibernateJpaDialect jpd = new HibernateJpaDialect();
+*/
+
+    LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 //    factory.setJpaDialect(jpd);
 //    factory.setJpaVendorAdapter(vendorAdapter);
 //    factory.setPackagesToScan("edu.dfci.cccb.mev");
-//    factory.setDataSource(dataSource);
-//    factory.setPersistenceUnitName("h2");
-//
-//    return factory;
-//  }
-//
-//  @Bean (name = "mev-datasource")
-//  public DataSource dataSource () {
-//    BasicDataSource dataSource = new BasicDataSource ();
-//    dataSource.setDriverClassName (environment.getProperty ("database.driver.class", "org.h2.Driver"));
-//    dataSource.setUrl (environment.getProperty ("database.url",
-//            "jdbc:h2:file:"
-//                    + getProperty ("java.io.tmpdir") + separator
-//                    + "mev"
-//                    + ";QUERY_CACHE_SIZE=100000"
-//                    + ";CACHE_SIZE=1048576"));
-//    dataSource.setUsername (environment.getProperty ("database.username", "sa"));
-//    dataSource.setPassword (environment.getProperty ("database.password", ""));
-//    return dataSource;
-//  }
+//    factory.setPersistenceProvider(new HibernatePersistenceProvider());
+//    factory.setDataSource(dataSource());
+    factory.setPersistenceUnitName("h2");
+    return factory;
+  }
+
+  @Bean (name="subsctiberTx")
+  public PlatformTransactionManager transactionManager (@Named("subsctiberEmfb") EntityManagerFactory emf) {
+    return new JpaTransactionManager(emf);
+  }
+
+  @Bean (name = "mev-datasource")
+  public DataSource dataSource () {
+    BasicDataSource dataSource = new BasicDataSource ();
+    dataSource.setDriverClassName (environment.getProperty ("database.driver.class", "org.h2.Driver"));
+    dataSource.setUrl (environment.getProperty ("database.url",
+            "jdbc:h2:file:"
+                    + getProperty ("java.io.tmpdir") + separator
+                    + "mev"
+                    + ";QUERY_CACHE_SIZE=100000"
+                    + ";CACHE_SIZE=1048576"));
+    dataSource.setUsername (environment.getProperty ("database.username", "sa"));
+    dataSource.setPassword (environment.getProperty ("database.password", ""));
+    return dataSource;
+  }
 
   /*@Bean
   public LocalSessionFactoryBean sessionFactory (@Named ("mev-datasource") DataSource dataSource) {
@@ -145,6 +136,7 @@ public class PersistenceConfiguration {
   public PlatformTransactionManager transactionManager (@Named ("mev-datasource") DataSource dataSource) {
     return new DataSourceTransactionManager (dataSource);
   }*/
+
 
   @Bean @Profile("!test")
   public Lifecycle h2ConsoleServer () {
@@ -186,4 +178,5 @@ public class PersistenceConfiguration {
       }
     };
   }
+
 }

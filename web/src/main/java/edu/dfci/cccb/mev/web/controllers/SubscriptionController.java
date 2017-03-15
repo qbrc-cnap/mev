@@ -6,12 +6,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.social.google.api.Google;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Provider;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,21 +26,18 @@ import static java.util.Arrays.asList;
 @Scope("request")
 @RequestMapping("/subscriber")
 @Log4j
+@Transactional("subsctiberTx")
 public class SubscriptionController {
     @Inject Environment environment;
-    @Inject @Named ("subscriberEm" ) private EntityManager db;
+//    @Inject @Named ("subscriberEm" ) private EntityManager db2;
+    @PersistenceContext(unitName="h2") private EntityManager db;
     private @Inject Provider<Google> gPlus;
     private static final Set<String> ALLOWED = new HashSet<>(asList ("lev.v.kuznetsov@gmail.com", "apartensky@gmail.com"));
 
     @RequestMapping (method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void subscribe (@RequestBody Subscriber s) {
-        db.getTransaction().begin();
-        try {
-            db.persist(s);
-        }finally {
-            db.getTransaction().commit();
-        }
+        db.persist(s);
     }
 
     @RequestMapping (method = RequestMethod.DELETE)
@@ -50,7 +48,6 @@ public class SubscriptionController {
 
     @RequestMapping (method = RequestMethod.GET)
     public Collection<Subscriber> subscribers () {
-        log.debug("Subscriber GET env"+environment);
         if (environment.getProperty("spring_profiles_active").contains("test")
             || environment.getProperty("spring_profiles_active").contains("local")
             || new HashSet<>(ALLOWED).removeAll(gPlus.get().plusOperations().getGoogleProfile().getEmailAddresses()))
