@@ -1,14 +1,17 @@
 <form role="form">
+    <div class="form-group">
+        <span class="lead">Please join our email list to support the WebMeV team to continue provide and improve our web services to the community</span>
+    </div>
     <div class="errors" ng-if="vm.errors.length>0">
         <p class="error bg-warning " ng-repeat="error in vm.errors">{{error.message}}</p>
     </div>
     <div class="form-group">
-        <label class="mev-param-label" >Name</label>
-        <input ng-model="vm.fields.name" placeholder="">
+        <label class="mev-param-label" >Email*</label>
+        <input type="email" ng-model="vm.fields.email" placeholder="ex: you@email.com">
     </div>
     <div class="form-group">
-        <label class="mev-param-label" >Email*</label>
-        <input ng-model="vm.fields.email" placeholder="ex: you@email.com">
+        <label class="mev-param-label" >Name</label>
+        <input ng-model="vm.fields.name" placeholder="">
     </div>
     <div class="form-group">
         <a class="btn btn-success" ng-click="vm.ok()" aria-hidden="true">Yes</a>

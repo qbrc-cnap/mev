@@ -13,7 +13,8 @@ define(["lodash", "./subscriberSignup.tpl.html", "./subscriberSignup.less"], fun
                 var _self=this;
                 function validate() {
                     this.errors.length=0;
-                    if (_.isEmpty(this.fields.email)) {
+                    if (_.isEmpty(this.fields.email)
+                        || this.fields.email.indexOf("@")<0) {
                         this.errors.push({
                             message: "Please provide a valid email"
                         });
