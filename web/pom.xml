@@ -516,6 +516,10 @@
               <name>mev.gcloud.serviceaccount.key.location</name>
               <value>${mev.gcloud.serviceaccount.key.location}</value>
             </systemProperty>
+            <systemProperty>
+              <name>MEV_PERSISTENCE_UNIT</name>
+              <value>${MEV_PERSISTENCE_UNIT}</value>
+            </systemProperty>
           </systemProperties>
         </configuration>
       </plugin>

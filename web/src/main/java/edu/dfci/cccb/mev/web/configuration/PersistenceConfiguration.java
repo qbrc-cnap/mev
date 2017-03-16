@@ -14,6 +14,8 @@
  */
 package edu.dfci.cccb.mev.web.configuration;
 
+import edu.dfci.cccb.mev.configuration.util.archaius.ArchaiusConfig;
+import edu.dfci.cccb.mev.configuration.util.contract.Config;
 import lombok.Synchronized;
 import lombok.extern.log4j.Log4j;
 import org.apache.commons.dbcp.BasicDataSource;
@@ -51,7 +53,7 @@ public class PersistenceConfiguration {
 
   private @Inject Environment environment;
 
-//  @Bean (name = "subsctiberEmf")
+//  @Bean (name = "mevEmf")
 //  @Scope("request")
 //  public EntityManagerFactory emf () {
 //    return Persistence.createEntityManagerFactory("h2");
@@ -59,12 +61,12 @@ public class PersistenceConfiguration {
 
 //  @Scope("request")
 //  @Bean (name="subscriberEm")
-//  public EntityManager em (@Named ("subsctiberEmf") EntityManagerFactory emf) {
+//  public EntityManager em (@Named ("mevEmf") EntityManagerFactory emf) {
 //    return emf.createEntityManager();
 //  }
 
-  @Bean (name="subsctiberEmfb")
-  public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
+  @Bean (name="mevEmfb")
+  public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean(@Named("mevdb-config")Config config) {
 /*
     HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
     vendorAdapter.setGenerateDdl(true);
@@ -79,15 +81,21 @@ public class PersistenceConfiguration {
 //    factory.setPackagesToScan("edu.dfci.cccb.mev");
 //    factory.setPersistenceProvider(new HibernatePersistenceProvider());
 //    factory.setDataSource(dataSource());
-    factory.setPersistenceUnitName("h2");
+    factory.setPersistenceUnitName(config.getProperty("MEV_PERSISTENCE_UNIT", "mevdb"));
     return factory;
   }
 
-  @Bean (name="subsctiberTx")
-  public PlatformTransactionManager transactionManager (@Named("subsctiberEmfb") EntityManagerFactory emf) {
+  @Bean (name="mevTx")
+  public PlatformTransactionManager transactionManager (@Named("mevEmfb") EntityManagerFactory emf) {
     return new JpaTransactionManager(emf);
   }
 
+  @Bean (name="mevdb-config")
+  public Config databaseProperties(){
+    return new ArchaiusConfig("mevdb.properties");
+  }
+
+/*
   @Bean (name = "mev-datasource")
   public DataSource dataSource () {
     BasicDataSource dataSource = new BasicDataSource ();
@@ -102,6 +110,7 @@ public class PersistenceConfiguration {
     dataSource.setPassword (environment.getProperty ("database.password", ""));
     return dataSource;
   }
+*/
 
   /*@Bean
   public LocalSessionFactoryBean sessionFactory (@Named ("mev-datasource") DataSource dataSource) {

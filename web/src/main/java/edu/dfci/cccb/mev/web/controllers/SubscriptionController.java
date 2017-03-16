@@ -26,11 +26,11 @@ import static java.util.Arrays.asList;
 @Scope("request")
 @RequestMapping("/subscriber")
 @Log4j
-@Transactional("subsctiberTx")
+@Transactional("mevTx")
 public class SubscriptionController {
     @Inject Environment environment;
 //    @Inject @Named ("subscriberEm" ) private EntityManager db2;
-    @PersistenceContext(unitName="h2") private EntityManager db;
+    @PersistenceContext private EntityManager db;
     private @Inject Provider<Google> gPlus;
     private static final Set<String> ALLOWED = new HashSet<>(asList ("lev.v.kuznetsov@gmail.com", "apartensky@gmail.com"));
 
