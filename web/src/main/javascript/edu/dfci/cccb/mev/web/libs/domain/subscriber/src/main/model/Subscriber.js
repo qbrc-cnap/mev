@@ -10,7 +10,7 @@ define(["lodash"], function(_){"use strict";
             }
         }
         function find(){
-            return mevCookieUtil.read("mev.subscriber");
+            return mevCookieUtil.read("mev.subscriber") || mevCookieUtil.read("quickstart_user");
         }
         function exists(){
             return !_.isNil(this.find());

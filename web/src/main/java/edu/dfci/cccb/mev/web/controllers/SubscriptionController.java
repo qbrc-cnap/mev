@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.social.google.api.Google;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import static java.util.Arrays.asList;
@@ -37,13 +39,18 @@ public class SubscriptionController {
     @RequestMapping (method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void subscribe (@RequestBody Subscriber s) {
-        db.persist(s);
+        if(find(s.email()) == null)
+            db.persist(s);
+    }
+
+    public Subscriber find (String em) {
+        return db.find(Subscriber.class, em);
     }
 
     @RequestMapping (method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public void unsubscribe (@RequestBody Subscriber s) {
-        db.remove(db.find(Subscriber.class, s.email()));
+        db.remove(s);
     }
 
     @RequestMapping (method = RequestMethod.GET)
