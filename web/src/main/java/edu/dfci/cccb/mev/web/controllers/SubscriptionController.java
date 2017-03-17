@@ -34,7 +34,9 @@ public class SubscriptionController {
 //    @Inject @Named ("subscriberEm" ) private EntityManager db2;
     @PersistenceContext private EntityManager db;
     private @Inject Provider<Google> gPlus;
-    private static final Set<String> ALLOWED = new HashSet<>(asList ("lev.v.kuznetsov@gmail.com", "apartensky@gmail.com"));
+    private static final Set<String> ALLOWED = new HashSet<>(asList ("lev.v.kuznetsov@gmail.com",
+            "apartensky@gmail.com",
+            "yaoyu_wang@mail.dfci.harvard.edu"));
 
     @RequestMapping (method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
@@ -50,7 +52,9 @@ public class SubscriptionController {
     @RequestMapping (method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public void unsubscribe (@RequestBody Subscriber s) {
-        db.remove(s);
+        Subscriber found = find(s.email());
+        if(found!=null)
+            db.remove(s);
     }
 
     @RequestMapping (method = RequestMethod.GET)
