@@ -14,16 +14,25 @@
  */
 package edu.dfci.cccb.mev.web.domain.social;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.dfci.cccb.mev.web.controllers.SubscriptionController;
+import edu.dfci.cccb.mev.web.domain.Subscriber;
 import lombok.extern.log4j.Log4j;
 
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.SignInAdapter;
+import org.springframework.social.google.api.Google;
+import org.springframework.social.google.api.plus.Person;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import edu.dfci.cccb.mev.dataset.rest.google.SecurityContext;
 import edu.dfci.cccb.mev.dataset.rest.google.User;
+
+import java.util.Objects;
 
 /**
  * @author levk
@@ -33,11 +42,21 @@ import edu.dfci.cccb.mev.dataset.rest.google.User;
 public class SimpleSignInAdapter implements SignInAdapter {
 
   private final UserCookieGenerator userCookieGenerator = new UserCookieGenerator ();
+    private @Inject Provider<Google> gPlus;
+    private @Inject Provider<SubscriptionController> ctl;
 
   public String signIn (String userId, Connection<?> connection, NativeWebRequest request) {
-    log.info ("SIGNING IN " + userId);
     SecurityContext.setCurrentUser (new User (userId));
     userCookieGenerator.addCookie (userId, request.getNativeResponse (HttpServletResponse.class));
-    return "/#/datasets?tab=google";
+      Person g = gPlus.get().plusOperations().getGoogleProfile();
+      try{
+        String name = String.format("%s %s", Objects.toString(g.getGivenName(),""), Objects.toString(g.getFamilyName(),""));
+        if(name.trim().isEmpty())
+          name = Objects.toString(g.getDisplayName(), "");
+        ctl.get().subscribe(new Subscriber(g.getAccountEmail(), name));
+      }catch(Exception e){
+        log.warn("Error while subscribing a google account",e);
+      }
+    return "/#/datasets/upload?signedin=true";
   }
 }

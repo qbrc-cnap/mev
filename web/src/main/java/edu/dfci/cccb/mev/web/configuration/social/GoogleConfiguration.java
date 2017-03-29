@@ -92,12 +92,6 @@ public class GoogleConfiguration extends WebMvcConfigurerAdapter {
                   ";https://www.googleapis.com/auth/userinfo.email" +
                   ";https://www.googleapis.com/auth/plus.me" +
                   ";https://www.googleapis.com/auth/plus.login" +
-                  ";https://www.googleapis.com/auth/drive" +
-                  ";https://www.googleapis.com/auth/drive.appdata" +
-                  ";https://www.googleapis.com/auth/drive.scripts" +
-                  ";https://www.googleapis.com/auth/drive.apps.readonly" +
-                  ";https://www.googleapis.com/auth/drive.metadata.readonly" +
-                  ";https://www.googleapis.com/auth/drive.file" +
                   ";https://www.googleapis.com/auth/plus.circles.read");
       }
     });

@@ -23,7 +23,7 @@ import edu.dfci.cccb.mev.annotation.domain.probe.metafile.MetafileProbeAnnotatio
 import edu.dfci.cccb.mev.annotation.domain.probe.metafile.MetafileProbeAnnotationPlatforms;
 
 @Configuration
-@Import({ProbeAnnotationsFilesConfiguration.class, ProbeAnnotationsPersistenceConfiguration.class, ProbeAnnotationsLoaderConfiguration.class})
+@Import({ProbeAnnotationsFilesConfiguration.class, ProbeAnnotationsLoaderConfiguration.class})
 public class ProbeAnnotationsConfigurationMain {
   
   public static final String MEV_PROBE_ANNOTATIONS_RELOAD_FLAG="mev.annotations.probe.reload.flag";

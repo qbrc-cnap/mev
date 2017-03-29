@@ -89,6 +89,9 @@ define(["lodash"], function(_){"use strict";
                 datasetName: datasetId
             }).$promise;
         }
+        function saveEmail(email){
+
+        }
         this.getDatasets = getDatasets;
         this.getActiveDatasets = getActiveDatasets;
         this.getInactiveDatasets = getInactiveDatasets;
@@ -97,6 +100,7 @@ define(["lodash"], function(_){"use strict";
         this.getDataset = getDataset;
         this.exportDataset = exportDataset;
         this.deactivate = deactivate;
+        this.saveEmail = saveEmail;
     };
     service.$inject=["$http", "$q", "mevDb", "mevDatasetRest"];
     service.$name="mevWorkspace";

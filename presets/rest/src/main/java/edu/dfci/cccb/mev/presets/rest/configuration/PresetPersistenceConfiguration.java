@@ -111,7 +111,8 @@ public class PresetPersistenceConfiguration {
   }
   
   
-  @Bean(name="presets-session-factory") @Inject
+  //@Bean(name="presets-session-factory")
+  //@Inject
   public LocalSessionFactoryBean sessionFactory (@Named("presets-datasource") DataSource datasource) {
     LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean ();
     sessionFactory.setDataSource (datasource);

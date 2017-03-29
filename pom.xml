@@ -67,7 +67,8 @@
 	<aws.java.sdk.version>1.9.6</aws.java.sdk.version>
     <maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
     <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
-
+    <!--<hibernate.version>4.2.7.SP1</hibernate.version>-->
+    <hibernate.version>5.1.4.Final</hibernate.version>
     <!-- MEV Defaults -->
     <mev.Rscript>Rscript</mev.Rscript>
     <mev.java.io.tmpdir>${java.io.tmpdir}</mev.java.io.tmpdir>
@@ -104,6 +105,7 @@
         <mev.extraClasspath>${user.home}/mev/config</mev.extraClasspath>
         <MEV_HOME>${user.home}/mev/</MEV_HOME>
         <MEV_CONFIG_DIR>${MEV_HOME}/config</MEV_CONFIG_DIR>
+        <MEV_PERSISTENCE_UNIT>mevdb-local</MEV_PERSISTENCE_UNIT>
       </properties>
     </profile>
     <profile>
@@ -134,6 +136,7 @@
         <mev.spring_profiles_active>aws</mev.spring_profiles_active>
         <mev.Rscript>nice -20 /usr/local/lib64/R/bin/Rscript</mev.Rscript>
        	<mev.extraClasspath>/opt/mev/config</mev.extraClasspath>
+        <MEV_PERSISTENCE_UNIT>mevdb-prod-proxy</MEV_PERSISTENCE_UNIT>
       </properties>      
     </profile>
   </profiles>

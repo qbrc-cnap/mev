@@ -124,12 +124,19 @@ define([], function(){"use strict";
 					//so just return an empty array
 					if(typeof data.columns.error!="undefined" || typeof data.rows.error!="undefined")
 						return results;
+					//find id column
+					var keyColumn = data.columns.find(function(column){
+						return column.name.toLowerCase()==="sampleid"
+							|| column.name.toLowerCase()==="id"
+							|| column.name.toLowerCase()==="mevid";
+					})
+					var keyIdx = keyColumn ? keyColumn.idx : 0;
 					//loop rows
 					for(var irow=0;irow<data.rows.rows.length;irow++){
 						var curRow=data.rows.rows[irow];
 						var rowValues=curRow.cells;
 						var row={
-							key: rowValues[0].v						
+							key: rowValues[keyIdx].v
 						};
 						//for every row, get the requested fields
 						for(var ifield=0;ifield<fields.length;ifield++){

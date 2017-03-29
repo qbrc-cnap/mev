@@ -15,8 +15,7 @@
 		<version>BAYLIE-SNAPSHOT</version>
 	</parent>
 	
-	<properties>		
-		<hibernate.version>4.2.7.SP1</hibernate.version>
+	<properties>
 		
 		<jooq.codegen.db.driver>org.h2.Driver</jooq.codegen.db.driver>
 		<jooq.codegen.db.url>jdbc:h2:file:${project.build.directory}/mev-probe-annotations-codegen</jooq.codegen.db.url>

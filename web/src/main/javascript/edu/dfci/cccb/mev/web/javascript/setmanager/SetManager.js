@@ -42,8 +42,8 @@ define(['jquery','mui'], function(jquery, ng){
 			};
 		}])		
 		.controller('SelectionSetManagerCtl', 
-	    ['$scope', '$element', '$attrs', '$routeParams', '$http', 'alertService', "mevContext", "$rootScope",
-		function($scope, $element, $attrs, $routeParams, $http, alertService, mevContext, $rootScope){
+	    ['$scope', '$element', '$attrs', '$routeParams', '$http', "mevContext", "$rootScope",
+		function($scope, $element, $attrs, $routeParams, $http, mevContext, $rootScope){
 			
 			$scope.sayHelloCtl = function() {
 				alert($scope.heatmapId + ":" + $scope.dataset.selections.column.values.length + ":" + $scope.$id);
