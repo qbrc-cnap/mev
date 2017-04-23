@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-md-12">
+            <h5>Click on a project file name to import</h5>         
+    </div>
+</div>
+<div class='row'>
+    <div class='col-md-12'>
+        <table class="mev-table-tight table table-striped" style="font-size:14px;">
+            <thead>
+            <tr>
+                <th>Project</a></th>
+                <th>Files</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr dir-paginate="project in vm.getProjects() | itemsPerPage: vm.itemsPerPage" total-items="vm.project.length"
+                current-page="vm.pagination.current">
+                <td>
+                    <dl>
+                        <dt>{{project.project_id}}</dt>
+                        <dd ng-if="project.description">{{project.description}}</dd>
+                    </dl>
+                </td>
+                <td>
+                    <dl>
+                        <dt ng-repeat-start="file in project.files">
+                            <a href="" ng-click="vm.import(project, file)">{{file.name}}</a>
+                        </dt>
+                        <dd ng-repeat-end ng-if="file.description">{{file.description}}</dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr>
+            <tr ng-show="vm.projects.length==0 && vm.keywords!=''">
+                <td colspan="5">
+                    No projects found.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
