@@ -20,6 +20,7 @@ import javax.inject.Named;
 import javax.inject.Provider;
 
 import edu.dfci.cccb.mev.configuration.util.contract.Config;
+import edu.dfci.cccb.mev.dataset.rest.assembly.tsv.FileTsvInput;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.social.google.api.Google;
@@ -90,7 +91,7 @@ public class ProjectController {
             private String name = file.name ();
 
             {
-              byte[] bt = storage.get ().get (project.bucket (), file.path ()).getContent ();
+              byte[] bt = storage.get ().get (project.bucket (), file.path ().replaceAll("^/", "")).getContent ();
               sz = bt.length;
               ct = new ByteArrayInputStream (bt);
             }
@@ -117,7 +118,7 @@ public class ProjectController {
 
             @Override
             public String contentType () {
-              return null;
+              return TAB_SEPARATED_VALUES;
             }
           }));
   }
