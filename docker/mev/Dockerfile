@@ -37,12 +37,12 @@ RUN echo "install.packages (c ('Rserve', 'rafalib', 'amap', 'RProtoBuf', 'jsonli
 EXPOSE 8080
 EXPOSE 6311
 
+ADD topgo /opt/data/topgo/domain/src/main/resources
 RUN rm -rf /usr/local/tomcat/webapps/*
 ADD mev.war /usr/local/tomcat/webapps/ROOT.war
 ADD server.xml /usr/local/tomcat/conf/server.xml
 ADD eval.R /opt/eval.R
 ADD run.sh /opt/run.sh
 ADD Rserve.conf /etc/Rserv.conf
-ADD topgo /opt/data/topgo/domain/src/main/resources
 
 CMD ["sh", "/opt/run.sh"]
