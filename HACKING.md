@@ -70,6 +70,7 @@ sudo apt-get install libcairo2-dev libjpeg-dev libgif-dev
 npm install -g linklocal
 npm install -g bower
 npm install -g gulp grunt
+npm install -g bulk
 ```
 
 ####Build Web Client
