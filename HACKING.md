@@ -71,6 +71,8 @@ npm install -g linklocal
 npm install -g bower
 npm install -g gulp grunt
 npm install -g bulk
+npm install -g lodash
+npm install -g steal-tools --save-dev
 ```
 
 ####Build Web Client
